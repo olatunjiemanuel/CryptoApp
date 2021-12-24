@@ -1,28 +1,36 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const ListItem = () => {
+const ListItem = ({
+  name,
+  symbol,
+  currentPrice,
+  priceChangePercentage7d,
+  logoUrl,
+}) => {
   return (
     <TouchableOpacity>
       <View style={styles.itemWrapper}>
         {/* Left side */}
-        <View>
+        <View style={styles.leftWrapper}>
           <Image
             source={{
-              uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEthereum&psig=AOvVaw0vAu8jlYFIZdp18kAOAfsA&ust=1640468035174000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLiBreax_fQCFQAAAAAdAAAAABAD',
+              uri: logoUrl,
             }}
             style={styles.image}
           />
-        </View>
-        <View style={styles.titleWrapper}>
-          <Text style={styles.title}>Ethereum</Text>
-          <Text style={styles.subtitle}>ETH</Text>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{name}</Text>
+            <Text style={styles.subtitle}>{symbol}</Text>
+          </View>
         </View>
 
         {/* Right Side */}
         <View style={styles.rightWrapper}>
-          <Text style={styles.title}>Ethereum</Text>
-          <Text style={[styles.subtitle, {color: 'red'}]}>ETH</Text>
+          <Text style={styles.title}>{currentPrice}</Text>
+          <Text style={[styles.subtitle, {color: 'red'}]}>
+            {priceChangePercentage7d}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -32,12 +40,34 @@ const ListItem = () => {
 export default ListItem;
 
 const styles = StyleSheet.create({
-  itemWrapper: {},
-  image: {},
-  titleWrapper: {},
+  itemWrapper: {
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  leftWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    height: 48,
+    width: 48,
+  },
+  titleWrapper: {
+    marginLeft: 8,
+  },
+  title: {
+    fontSize: 18,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#A9ABB1',
+    marginTop: 4,
+  },
+  rightWrapper: {
+    alignItems: 'flex-end',
+  },
   title: {},
-  subtitle: {},
-  rightWrapper: {},
-  title: {},
-  subtitle: {},
 });
