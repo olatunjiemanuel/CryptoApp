@@ -1,8 +1,9 @@
-import React, {useRef, useMemo} from 'react';
+import React, {useRef, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import ListItem from './components/ListItem';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {SAMPLE_DATA} from './assets/data/sampleData';
+import Chart from './components/Chart';
 import 'react-native-gesture-handler';
 
 const ListHeader = () => (
@@ -15,13 +16,16 @@ const ListHeader = () => (
 );
 
 export default function App() {
+  const [selectedCoinData, setSelectedCoinData] = useState(null);
+
   // ref
   const bottomSheetModalRef = useRef(null);
 
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
 
-  const openModal = () => {
+  const openModal = item => {
+    setSelectedCoinData(item);
     bottomSheetModalRef.current.present();
   };
 
@@ -40,7 +44,7 @@ export default function App() {
                 item.price_change_percentage_7d_in_currency
               }
               logoUrl={item.image}
-              onPress={() => openModal()}
+              onPress={() => openModal(item)}
             />
           )}
           ListHeaderComponent={<ListHeader />}
@@ -51,9 +55,18 @@ export default function App() {
         index={0}
         snapPoints={snapPoints}
         style={styles.bottomSheet}>
-        <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </View>
+        {selectedCoinData ? (
+          <Chart
+            currentPrice={selectedCoinData.current_price}
+            logoUrl={selectedCoinData.image}
+            name={selectedCoinData.name}
+            symbol={selectedCoinData.symbol}
+            priceChangePercentage7d={
+              selectedCoinData.price_change_percentage_7d_in_currency
+            }
+            sparkline={selectedCoinData.sparkline_in_7d.price}
+          />
+        ) : null}
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
